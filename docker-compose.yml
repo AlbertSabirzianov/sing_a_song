@@ -1,0 +1,10 @@
+version: '3'
+
+volumes:
+  data:
+
+services:
+  bot:
+    build: .
+    volumes:
+      - data:/app/data
