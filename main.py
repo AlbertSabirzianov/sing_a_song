@@ -131,7 +131,6 @@ def add_comment_to_song(message, song: Song):
     song.comment = message.text
     servise.save_song(song)
     bot.send_message(message.chat.id, 'Песня успешно добавленна!')
-    bot.register_next_step_handler(message, start)
 
 
 if __name__ == '__main__':
