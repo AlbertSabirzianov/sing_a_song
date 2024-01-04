@@ -5,11 +5,16 @@ volumes:
 
 services:
   singers-bot:
-    build: SingersDockerfile
+    build:
+      context: .
+      dockerfile: SingersDockerfile
+
     volumes:
       - data:/app/data
 
   trio-bot:
-    build: TrioDockerfile
+    build:
+      context: .
+      dockerfile: TrioDockerfile
     volumes:
       - data:/app/data
