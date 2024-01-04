@@ -21,12 +21,21 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str]
-    phone_number: Mapped[str]
+    username: Mapped[Optional[str]]
     chat_id: Mapped[int]
 
     songs: Mapped[List['Song']] = relationship(
         back_populates='user', cascade='all, delete-orphan'
     )
+
+    def __str__(self):
+        text = ''
+        text += f'*{self.name}* \n'
+        text += f'__@{self.username}__ \n'
+        text += 'Песни: '
+        for song in self.songs:
+            text += f'_{song.name}_, '
+        return text
 
 
 class Song(Base):
@@ -47,7 +56,7 @@ class Song(Base):
         text += f'_id {self.id}_ \n'
         text += f'*{self.name}* \n'
         text += f'_{self.link}_ \n'
-        text += f'__Исполнитель__ \n _{self.user.name}_ \n' \
-                f'__Телефон__ \n _{self.user.phone_number}_\n'
-        text += f'__Коментарий__ \n _{self.comment}_\n'
+        # text += f'__Исполнитель__ \n _{self.user.name}_ \n' \
+        #         f'__Контакт__ \n _{self.user.username}_\n'
+        text += f'_{self.comment}_\n'
         return text

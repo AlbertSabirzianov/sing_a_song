@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from models import User, Song, session
 
@@ -43,13 +43,25 @@ def get_user_by_chat_id(chat_id) -> Optional[User]:
         return user
 
 
-def get_message_from_songs(songs: List[Song]) -> str:
+def get_message_from_songs(songs: Union[List[Song], List[User]]) -> str:
     """Создать текстовое сообщение из Песен."""
 
     text = ''
     for song in songs:
         text += str(song)
         text += '\n'
+    return text
+
+
+def get_message_from_songs_for_trio(songs: List[Song]) -> str:
+    """Создать текстовое сообщение из Песен для участников трио."""
+
+    text = ''
+    for song in songs:
+        text += f'_{song.link}_ \n'
+        text += f'_{song.comment}_\n'\
+                f'_{song.user.name}_ (_@{song.user.username}_) \n'
+        text += '\n \n'
     return text
 
 
@@ -85,3 +97,13 @@ def get_song_by_id(song_id: int):
             joinedload(Song.user)
         ).where(Song.id == song_id).first()
         return song
+
+
+def get_all_users() -> List[User]:
+    """Получить всех исполнителей."""
+
+    with session() as sess:
+        users = sess.query(User).options(
+            joinedload(User.songs)
+        ).all()
+        return users

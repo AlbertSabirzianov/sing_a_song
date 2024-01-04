@@ -1,3 +1,8 @@
+"""
+  Бот для вокалистов, позаоляет добавлять и удалять
+  песни, которые собираются исполнять на концерте.
+"""
+
 import os
 
 import telebot
@@ -8,34 +13,32 @@ import servise
 
 load_dotenv()
 
-TOKEN = os.getenv('TOKEN')
+TOKEN = os.getenv('SINGERS_BOT_TOKEN')
 
 bot = telebot.TeleBot(token=TOKEN)
-
-
-def get_number(message, user: User):
-    """Ввод номера телефона и сохранение пользователя в базу."""
-
-    user.phone_number = str(message.text)
-    servise.save_user(user)
-    bot.send_message(message.chat.id, 'Вы зарегестрированны!')
-    bot.register_next_step_handler(message, start)
-
-
-def get_name(message, user: User):
-    """Вввод имени пользователя."""
-
-    user.name = message.text
-    bot.send_message(message.chat.id, 'Введите телефон')
-    bot.register_next_step_handler(message, get_number, user=user)
 
 
 def registration(message):
     """Регистрация Пользователя."""
 
-    user = User(chat_id=message.chat.id)
-    bot.send_message(message.chat.id, 'Введите имя')
-    bot.register_next_step_handler(message, get_name, user=user)
+    user = User(
+        chat_id=message.chat.id,
+        username=message.chat.username
+    )
+    user.name = message.text
+    servise.save_user(user)
+    murkup = telebot.types.ReplyKeyboardMarkup()
+    create_song_btn = telebot.types.KeyboardButton('Добавить песню')
+    my_songs_btn = telebot.types.KeyboardButton('Мои песни')
+    delete_song_btn = telebot.types.KeyboardButton('Удалить песню')
+    murkup.row(my_songs_btn)
+    murkup.row(create_song_btn, delete_song_btn)
+    bot.send_message(
+        message.chat.id,
+        'Бот работает! Теперь вы можете добавлять песни,'
+        ' которые собираетесь исполнять!',
+        reply_markup=murkup
+    )
 
 
 @bot.message_handler(commands=['start'])
@@ -43,30 +46,37 @@ def start(message):
     """Старт Бота."""
 
     if not servise.user_exists(message.chat.id):
-        bot.send_message(message.chat.id, 'Для использования бота необходима регистрация')
+        bot.send_message(
+            message.chat.id,
+            'Для использования бота напишете своё имя, пожалуйста:'
+        )
         bot.register_next_step_handler(message, registration)
     else:
         murkup = telebot.types.ReplyKeyboardMarkup()
-        all_songs_btn = telebot.types.KeyboardButton('Все песни')
         create_song_btn = telebot.types.KeyboardButton('Добавить песню')
         my_songs_btn = telebot.types.KeyboardButton('Мои песни')
         delete_song_btn = telebot.types.KeyboardButton('Удалить песню')
-        murkup.row(all_songs_btn, my_songs_btn)
+        murkup.row(my_songs_btn)
         murkup.row(create_song_btn, delete_song_btn)
-        bot.send_message(message.chat.id, 'Бот работает!', reply_markup=murkup)
+        bot.send_message(
+            message.chat.id,
+            'Бот работает! Теперь вы можете добавлять песни,'
+            ' которые собираетесь исполнять!',
+            reply_markup=murkup
+        )
 
 
 @bot.message_handler()
 def user_button_input(message):
     """Обрабатываем нажатие на кнопки от пользователя."""
 
-    if message.text == "Все песни":
-        songs = servise.get_all_songs()
-        if not songs:
-            bot.send_message(message.chat.id, 'Песни ещё не добавленны')
-        else:
-            text = servise.get_message_from_songs(songs)
-            bot.send_message(message.chat.id, text, parse_mode='Markdown')
+    # if message.text == "Все песни":
+    #     songs = servise.get_all_songs()
+    #     if not songs:
+    #         bot.send_message(message.chat.id, 'Песни ещё не добавленны')
+    #     else:
+    #         text = servise.get_message_from_songs(songs)
+    #         bot.send_message(message.chat.id, text, parse_mode='Markdown')
 
     if message.text == 'Мои песни':
         user = servise.get_user_by_chat_id(message.chat.id)

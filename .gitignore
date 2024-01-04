@@ -2,4 +2,4 @@ venv
 .env
 .idea
 /data/sqlite.db
-
+TODO.txt

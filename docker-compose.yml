@@ -4,7 +4,12 @@ volumes:
   data:
 
 services:
-  bot:
-    build: .
+  singers-bot:
+    build: SingersDockerfile
+    volumes:
+      - data:/app/data
+
+  trio-bot:
+    build: TrioDockerfile
     volumes:
       - data:/app/data
