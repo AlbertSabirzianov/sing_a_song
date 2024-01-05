@@ -44,7 +44,7 @@ def user_button_input(message):
             bot.send_message(message.chat.id, 'Песни ещё не добавленны')
         else:
             text = servise.get_message_from_songs_for_trio(songs)
-            bot.send_message(message.chat.id, text, parse_mode='Markdown')
+            bot.send_message(message.chat.id, text, parse_mode='MarkdownV2')
 
     if message.text == 'Все исполнители':
         users = servise.get_all_users()
@@ -52,7 +52,7 @@ def user_button_input(message):
             bot.send_message(message.chat.id, 'Исполнителей ещё нет')
         else:
             text = servise.get_message_from_songs(users)
-            bot.send_message(message.chat.id, text, parse_mode='Markdown')
+            bot.send_message(message.chat.id, text, parse_mode='MarkdownV2')
 
 
 if __name__ == '__main__':

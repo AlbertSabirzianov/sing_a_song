@@ -1,4 +1,5 @@
 from typing import List, Optional, Union
+from telebot import formatting
 
 from models import User, Song, session
 
@@ -58,9 +59,9 @@ def get_message_from_songs_for_trio(songs: List[Song]) -> str:
 
     text = ''
     for song in songs:
-        text += f'_{song.link}_ \n'
-        text += f'_{song.comment}_\n'\
-                f'_{song.user.name}_ (_@{song.user.username}_) \n'
+        text += f'{formatting.mlink(song.link, url=song.link)} \n'
+        text += f'{formatting.mitalic(song.comment)}\n'\
+                f'{formatting.mitalic(song.user.name)} \(@{formatting.mitalic(song.user.username)}\) \n'
         text += '\n \n'
     return text
 

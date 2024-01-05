@@ -85,7 +85,7 @@ def user_button_input(message):
             bot.send_message(message.chat.id, 'Вы ещё не добавили песен')
         else:
             text = servise.get_message_from_songs(songs)
-            bot.send_message(message.chat.id, text, parse_mode='Markdown')
+            bot.send_message(message.chat.id, text, parse_mode='MarkdownV2')
 
     if message.text == 'Добавить песню':
         user = servise.get_user_by_chat_id(message.chat.id)
@@ -131,7 +131,10 @@ def add_link_to_song(message, song: Song):
     """Добавляем ссылку песне."""
 
     song.link = message.text
-    bot.send_message(message.chat.id, 'Введите коментарий (Тональность, оссобенности формы):')
+    bot.send_message(
+        message.chat.id,
+        'Введите коментарий (Тональность, оссобенности формы, если коментария нет напишите просто "-"):'
+    )
     bot.register_next_step_handler(message, add_comment_to_song, song=song)
 
 
