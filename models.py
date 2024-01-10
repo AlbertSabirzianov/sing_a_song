@@ -2,7 +2,6 @@ import os
 from typing import Optional, List
 
 from dotenv import load_dotenv
-from telebot import formatting
 
 from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, sessionmaker
@@ -30,12 +29,14 @@ class User(Base):
     )
 
     def __str__(self):
+        
         text = ''
-        text += f'{formatting.mitalic(self.name)} \n'
-        text += f'@{formatting.mitalic(self.username)} \n'
+        text += f'{self.name} \n'
+        text += f'@{self.username} \n'
         text += 'Песни: '
         for song in self.songs:
-            text += f'{formatting.mitalic(song.name)}, '
+            text += f'{song.name}, '
+        text += '\n\n'
         return text
 
 
@@ -54,10 +55,12 @@ class Song(Base):
 
     def __str__(self):
         text = ''
-        text += f'_id {self.id}_ \n'
-        text += f'{formatting.mitalic(self.name)} \n'
-        text += f'{formatting.mlink(self.link, url=self.link)} \n'
+        text += f'id {self.id} \n'
+        
+        text += f'{self.name} \n'
+        text += f'{self.link} \n'
         # text += f'__Исполнитель__ \n _{self.user.name}_ \n' \
         #         f'__Контакт__ \n _{self.user.username}_\n'
-        text += f'{formatting.mitalic(self.comment)}\n'
+        text += f'{self.comment}\n'
+
         return text

@@ -85,8 +85,7 @@ def user_button_input(message):
             bot.send_message(message.chat.id, 'Вы ещё не добавили песен')
         else:
             text = servise.get_message_from_songs(songs)
-            bot.send_message(message.chat.id, text, parse_mode='MarkdownV2')
-
+            bot.send_message(message.chat.id, text)
     if message.text == 'Добавить песню':
         user = servise.get_user_by_chat_id(message.chat.id)
         song = Song(user_id=user.id)
