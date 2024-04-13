@@ -1,0 +1,29 @@
+version: '3'
+
+volumes:
+  data:
+
+services:
+  singers-bot:
+    build:
+      context: ./../src/.
+      dockerfile: ./../docker/Dockerfile
+    command: python singers_main.py
+    volumes:
+      - data:/app/data
+    environment:
+      - SINGERS_BOT_TOKEN=${SINGERS_BOT_TOKEN}
+      - TRIO_BOT_TOKEN=${TRIO_BOT_TOKEN}
+      - DATABASE_PATH=${DATABASE_PATH}
+
+  trio-bot:
+    build:
+      context: ./../src/.
+      dockerfile: ./../docker/Dockerfile
+    command: python trio_main.py
+    volumes:
+      - data:/app/data
+    environment:
+      - SINGERS_BOT_TOKEN=${SINGERS_BOT_TOKEN}
+      - TRIO_BOT_TOKEN=${TRIO_BOT_TOKEN}
+      - DATABASE_PATH=${DATABASE_PATH}

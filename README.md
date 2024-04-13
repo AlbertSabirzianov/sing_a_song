@@ -29,42 +29,15 @@
 принимают участие в концерте и их контакты
 ```
 
-# Как развернуть локально
-скачайте проект себе на компьютер
+# Как запустить
+Для начала
+скачайте репозиторий на свой компьютер или удалённый сервер 
 ```commandline
 git clone https://github.com/AlbertSabirzianov/sing_a_song.git
 ```
-зайдете в каталог проекта
+зайдете в каталог docker проекта
 ```commandline
-cd sing_a_song
-```
-установите зависимости
-```commandline
-pip install -r requirements.txt
-```
-создайте файл .env со следующим содержимым
-```text
-SINGERS_BOT_TOKEN=<Токен вашего бота для солистов>
-TRIO_BOT_TOKEN=<Токен вашего бота для музыкантов>
-DATABASE_PATH=<Путь до базы данных, например sqlite:///data/sqlite.db>
-```
-запустите бота для солистов
-```commandline
-python singers_main.py
-```
-Открыв новый терминал запустите бота для музыкантов
-```commandline
-python trio_main.py
-```
-# Как развернуть на сервере
-Для разворачивания бота на сервере можно использовать докер. для начала
-скачайте репозиторий на свой удалённый сервер
-```commandline
-git clone https://github.com/AlbertSabirzianov/sing_a_song.git
-```
-зайдете в каталог проекта
-```commandline
-cd sing_a_song
+cd sing_a_song/docker
 ```
 создайте файл .env со следующим содержимым
 ```text

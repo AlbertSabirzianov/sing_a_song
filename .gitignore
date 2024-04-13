@@ -1,5 +1,6 @@
 venv
-.env
+docker/.env
 .idea
-/data/sqlite.db
+/src/data/sqlite.db
 TODO.txt
+__pycache__

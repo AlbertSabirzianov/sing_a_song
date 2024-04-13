@@ -59,8 +59,6 @@ class Song(Base):
         
         text += f'{self.name} \n'
         text += f'{self.link} \n'
-        # text += f'__Исполнитель__ \n _{self.user.name}_ \n' \
-        #         f'__Контакт__ \n _{self.user.username}_\n'
         text += f'{self.comment}\n'
 
         return text
